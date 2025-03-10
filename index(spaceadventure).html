@@ -34,127 +34,309 @@
     <a href="index.html" class="back-button">⬅ Back to Home</a>
 
     <script>
-        let backgroundImage, endImage;
-        let gameState = "playing";
-        let agressive = false;
-        let xlocation = 0, ylocation = 0;
-        let moves = 6;
-        let message1 = "", message2 = "";
-        let messageTimer1 = -2000, messageTimer2 = -2000;
+        let backgroundImage;
+        let endImage;
+        let gameState="playing";
+        let agressive=false;
+        let xlocation=0;
+        let ylocation=0;
+        let moves=6;
+        let message1 = "";
+        let message2 = "";
+        let messageTimer1 = -2000;
+        let messageTimer2 = -2000;
         const messageDuration = 2000;
         let metPerson = false;
         let zoneRN;
-        let canvasSize = 1000; // Base size to scale from
-
         let outcomes = [
-            "You materialized inside a planet. Instantly crushed.",
-            "You teleported directly into a star. Vaporized on arrival.",
-            "You died. I'm not even sure what happened.",
-            "You phased halfway into an asteroid. The other half didn't make it.",
-            "You reappeared inside a black hole. Say goodbye to time itself.",
-            "You teleported into the middle of an ongoing space battle. Missiles incoming.",
-            "You ended up inside a sunken spaceship. Oxygen was never an option.",
-            "You appeared in a reactor core. At least it was quick.",
-            "You re-emerged in the middle of a supernova. Good luck with that.",
-            "You teleported to an empty void dimension. There is no escape."
+          "You materialized inside a planet. Instantly crushed.",
+          "You teleported directly into a star. Vaporized on arrival.",
+          "You died. I'm not even sure what happened.",
+          "You phased halfway into an asteroid. The other half didn't make it.",
+          "You reappeared inside a black hole. Say goodbye to time itself.",
+          "You teleported into the middle of an ongoing space battle. Missiles incoming.",
+          "You ended up inside a sunken spaceship. Oxygen was never an option.",
+          "You appeared in a reactor core. At least it was quick.",
+          "You re-emerged in the middle of a supernova. Good luck with that.",
+          "You teleported to an empty void dimension. There is no escape."
         ];
-
-        // Convert fixed values into percentages
         let cockpitZones = [
-            { name: "Lightspeed", x: 355 / canvasSize, y: 730 / canvasSize, w: 75 / canvasSize, h: 60 / canvasSize, message: "You escape." },
-            { name: "Fire", x: 570 / canvasSize, y: 730 / canvasSize, w: 75 / canvasSize, h: 60 / canvasSize, message: "You fire ... and miss." },
-            { name: "Joystick", x: 462 / canvasSize, y: 560 / canvasSize, w: 76 / canvasSize, h: 150 / canvasSize, message: "Which direction do you want to move?" },
-            { name: "Eject", x: 740 / canvasSize, y: 730 / canvasSize, w: 50 / canvasSize, h: 40 / canvasSize, message: "Well that was a bad idea." },
-            { name: "Information Screen", x: 365 / canvasSize, y: 370 / canvasSize, w: 270 / canvasSize, h: 185 / canvasSize, message: "There seems to be a distress call coming from [2,1].", message2: "It looks like there is a gap in the unidentifiable spacecraft [1,0]" },
+          { name: "Lightspeed", x: 355*width/1000, y: 730*height/1000, w: 75*width/1000, h: 60*height/1000, message:"You escape." },
+          { name: "Fire", x: 570*width/1000, y: 730*height/1000, w: 75*width/1000, h: 60*height/1000,message:"You fire ... and miss." },
+          { name: "Joystick", x: 462*width/1000, y: 560*height/1000, w: 76*width/1000, h: 150*height/1000, message:"Which direction do you want to move?"},
+        	{ name: "Eject", x:740*width/1000, y:730*height/1000, w:50*width/1000, h:40*height/1000, message:"Well that was a bad idea."},
+        	{ name: "Information Screen", x:365*width/1000, y:370*height/1000, w:270*width/1000, h:185*height/1000, message:"There seems to be a distress call coming from [2,1].",message2:"It looks like there is a gap in the unidentifiable spacecraft [1,0]"},
         ];
-
-        function preload() {
-            backgroundImage = loadImage('pilotcockpitforgame.png');
-            endImage = loadImage('shipdestroyed.webp');
+        let buttons = [
+          { name: "button1", x: 250*width/1000, y: 350*height/1000, w: 200*width/1000, h: 100*height/1000, question: "Temp"},
+          { name: "button2", x: 550*width/1000, y: 350*height/1000, w: 200*width/1000, h: 100*height/1000, question: "Temp"},
+          { name: "button3", x: 250*width/1000, y: 550*height/1000, w: 200*width/1000, h: 100*height/1000, question: "Temp"},
+        	{ name: "button4", x:550*width/1000, y:550*height/1000, w:200*width/1000, h:100*height/1000, question: "Temp"}
+        ];
+        let currentZone = "noZone"; 
+        let currentScreen = "cockpit";
+        
+        function preload(){
+          roomImage = loadImage('pilotcockpitforgame.png');
+        	endImage = loadImage('shipdestroyed.webp');
         }
-
-        function setup() {
-            createCanvas(windowWidth, windowHeight);
-            showText("There is a sea of unusually shaped spacecraft in front of you.");
-        }
-
+        
+        function setup() { 
+            createCanvas(Math.min(windowWidth,windowHeight),Math.min(windowWidth,windowHeight));
+        	showText("There is a sea of unusually shaped spacecraft in front of you.")
+        } 
+        
         function draw() {
-            checkCursor();
-            background(0);
-            let img = gameState === "destroyed" ? endImage : backgroundImage;
-
-            // Scale the image while keeping aspect ratio
-            let aspectRatio = backgroundImage.width / backgroundImage.height;
-            let imgWidth, imgHeight;
-            if (windowWidth / windowHeight > aspectRatio) {
-                imgHeight = windowHeight;
-                imgWidth = imgHeight * aspectRatio;
-            } else {
-                imgWidth = windowWidth;
-                imgHeight = imgWidth / aspectRatio;
-            }
-
-            let imgX = (windowWidth - imgWidth) / 2;
-            let imgY = (windowHeight - imgHeight) / 2;
-            image(img, imgX, imgY, imgWidth, imgHeight);
-
-            if (millis() - messageTimer1 < messageDuration) {
-                drawMessage(message1, height / 2);
-            }
-            if (millis() - messageTimer2 < messageDuration) {
-                drawMessage(message2, height / 2 + 60);
-            }
+        	checkCursor();
+        	//if (currentScreen.includes("cockpit")) 
+        	if (xlocation==2&&ylocation==1&&!metPerson){
+        		metPerson=true;
+        		meetPerson();
+        	}
+        	if (gameState=="destroyed") image(endImage,0,0);
+        	else {image(roomImage,0,0);
+        	if (currentScreen.toLowerCase().includes("button")) drawButtons();
+        			 }
+          //text("zone: "+currentZone+",screen:"+currentScreen,mouseX,mouseY); //if you want to make sure stuff is lined up right
+        	if (millis() - messageTimer1 < messageDuration) {
+            drawMessage(message1, height / 2);
+          }
+        
+          // Show the second message if its timer is still active
+          if (millis() - messageTimer2 < messageDuration) {
+            drawMessage(message2, height / 2 + 60); // Lower position
+          }
+        	if( zoneRN!="0"){
+        		fill(0, 0, 139);
+        		text(zoneRN.name,zoneRN.x+zoneRN.w/2,zoneRN.y-20);
+        	}
+            drawZones(); // if zones need to be moved around, makes them easy to see
         }
-
-        function checkCursor() {
-            zoneRN = "0";
-            let newZone = "noZone";
+        function drawZones(){
             for (let zone of cockpitZones) {
-                if (isMouseOver(zone)) {
-                    newZone = zone.name;
-                    zoneRN = zone;
-                    break;
-                }
-            }
-            currentZone = newZone;
-            cursor(currentZone !== "noZone" ? 'pointer' : 'default');
+        		stroke(0);
+        		strokeWeight(10);
+        		fill(0, 240, 25, 150); 
+                rect(zone.x, zone.y, zone.w, zone.h);
+        		noStroke();
+        		fill(0);
+          }
+        
         }
-
-        function isMouseOver(zone) {
-            let scaleX = width / canvasSize;
-            let scaleY = height / canvasSize;
-            return mouseX > zone.x * width && mouseX < (zone.x + zone.w) * width &&
-                   mouseY > zone.y * height && mouseY < (zone.y + zone.h) * height;
+        function drawButtons() {
+          // Semi-transparent green
+          
+          for (let button of buttons) {
+        		stroke(0);
+        		strokeWeight(10);
+        		fill(0, 240, 25, 150); 
+            rect(button.x, button.y, button.w, button.h);
+        		noStroke();
+        		fill(0);
+        		textSize(32*width/1000);
+        		text (button.question, button.x+100*width/1000,button.y+50*height/1000);
+          }
+        
         }
-
+        function escape(){
+        	if (metPerson) showText("You saved something ... and got away. Nice job!");
+        	else if (agressive) showText("Well at least you didn't die.");
+        	else {
+        		showText("It would have been nice to answer the distress call. That one might come back to bite you.")
+        		showTextLower("You did escape though.");
+        	}
+        	gameState="escaped";
+        	currentScreen="endScreen";
+        	
+        }
+        function end(reason){
+        	currentScreen="endScreen";
+        	showText(reason);
+        	gameState="destroyed";
+        }
+        function checkCursor() {
+        	zoneRN="0";
+          let newZone = "noZone";
+        	if (currentScreen == "cockpit"){
+         	 for (let zone of cockpitZones) {
+        			if (isMouseOver(zone)) {
+        				newZone = zone.name; // Update to the hovered zone
+        				zoneRN=zone;
+        				break; // Stop checking once a match is found
+        			}
+        		}
+          }
+        	if (currentScreen.toLowerCase().includes("button")){
+        		for (let button of buttons){
+        			if (isMouseOver(button)){
+        				newZone = button.name;
+        				break;
+        			}
+        		}
+        	}
+        
+          currentZone = newZone; // Set the global currentZone
+        
+          if (currentZone !== "noZone") {
+            cursor('pointer'); // Change to pointer if over a zone
+          } else {
+            cursor('default'); // Reset cursor if not over a zone
+          }
+        }
+        
         function mouseClicked() {
-            if (currentZone !== "noZone") {
-                timePassed();
-                let functionName = currentZone == "Information Screen" ? "frontscreen" : currentZone.toLowerCase();
-                if (typeof window[functionName] === "function") {
-                    window[functionName]();
-                }
+          if (currentZone !== "noZone") {
+        		timePassed();
+        		let functionName;
+        		if(currentZone=="Information Screen") functionName="frontscreen";
+            else functionName = currentZone.toLowerCase(); // Convert name to lowercase
+            if (typeof window[functionName] === "function") {
+              window[functionName](); // Dynamically call the function
             }
+          }
         }
-
+        function button1(){
+        	if (currentScreen == "joystickbuttons"){
+        		moves--;
+        		if (moves<0){
+        			showText("You ran out of fuel.");
+        			currentScreen = "cockpit";
+        		}
+        		else{
+        			currentScreen = "cockpit";
+        			ylocation++;
+        			showText("Location: "+xlocation+', '+ylocation);
+        		}
+        	}
+        	if (currentScreen == "lightspeedbuttons"){
+        		if(timer<=0)escape();
+        		else end("You tried to get out of there but unfortunately they already blocked your path to escape.");
+        	}
+        }
+        function button2(){
+        	if (currentScreen == "joystickbuttons"){
+        		moves--;
+        		if (moves<=0){
+        			showText("You ran out of fuel.");
+        		}
+        		else{
+        			currentScreen = "cockpit";
+        			ylocation--;
+        			showText("Location: "+xlocation+', '+ylocation);
+        		}
+        	}
+        	if (currentScreen == "lightspeedbuttons"){
+        		if(xlocation==1&&ylocation==0){
+        			escape();
+        		}
+        		else end("How are you going to go forward when there are spaceships in front of you?");
+        	}
+        }
+        function button3(){
+        	if (currentScreen == "joystickbuttons"){
+        		moves--;
+        		if (moves<0){
+        			showText("You ran out of fuel.");
+        		}
+        		else{
+        			currentScreen = "cockpit";
+        			xlocation--;
+        			showText("Location: "+xlocation+', '+ylocation);
+        		}
+        	}
+        	if (currentScreen == "lightspeedbuttons"){
+        		end("That shit made no sense in Star Wars. Obviously it doesn't work.");
+        	}
+        }
+        function button4(){
+        	if (currentScreen == "joystickbuttons"){
+        		moves--;
+        		if (moves<0){
+        			showText("You ran out of fuel.");
+        		}
+        		else{
+        			currentScreen = "cockpit";
+        			xlocation++;
+        			showText("Location: "+xlocation+', '+ylocation);
+        		}
+        	}
+        	if (currentScreen == "lightspeedbuttons"){
+        		let r = random(1);
+          	if (r <= 0.1) {
+            	escape();
+        			showText("Somehow that worked out. Do you have an Infinite Improbability Drive?");
+        		} else {
+        			let index = floor(map(r, 0.1, 1, 0, outcomes.length)); // Map range 0.1-1 to 0-9
+        			end(outcomes[index]);
+        		}
+        	}
+        }
         function drawMessage(message, yPos) {
-            fill(0);
-            rect(0, yPos - 25, width, 50);
-            fill(255);
-            textSize(24);
-            textAlign(CENTER, CENTER);
-            text(message, width / 2, yPos);
+          fill(0); // Black background bar
+          rect(0, yPos - 25*width/1000, width, 50*width/1000);
+          
+          fill(255); // White text
+          textSize(24*width/1000);
+          textAlign(CENTER, CENTER);
+          text(message, width / 2, yPos);
         }
-
+        
+        // Function to show the first text (centered)
         function showText(text) {
-            message1 = text;
-            messageTimer1 = millis();
+          message1 = text;
+          messageTimer1 = millis(); // Start the timer
         }
-
-        function windowResized() {
-            resizeCanvas(windowWidth, windowHeight);
+        
+        // Function to show the second text (lower)
+        function showTextLower(text) {
+          message2 = text;
+          messageTimer2 = millis(); // Start the timer
         }
-
+        let timer=0;
+        function timePassed(){
+        	if (agressive) timer++;
+        	if (timer>=5) {
+        		end("Well your ship got blown up. Nice one bud.");
+        		//make the screen change and the game end saying you got attacked
+        	}
+        }
+        
+        function lightspeed() {
+        	currentScreen = "lightspeedbuttons";
+        	buttons[0].question = "Retreat";
+        	buttons[1].question = "Forwards";
+        	buttons[2].question = "Attack";
+        	buttons[3].question = "Random";
+        }
+        function fire() {
+        	agressive=true;
+        	showText("It seems to do almost nothing. The ships quickly prepare to attack you back.");
+        	
+        }
+        function frontscreen() {
+        	showText(cockpitZones[4].message);
+        	showTextLower(cockpitZones[4].message2);
+        }
+        function meetPerson(){
+        	showText("You pick the pod that was sending the distress signal.");
+        	showTextLower("The spaceships around it agressively turn towards you.");
+        	if (timer==0)timer = -2;
+        }
+        function joystick() {
+        	currentScreen = "joystickbuttons";
+        	buttons[0].question = "Up";
+        	buttons[1].question = "Down";
+        	buttons[2].question = "Left";
+        	buttons[3].question = "Right";
+        }
+        function eject() {
+        	currentScreen = "eject";
+        	end("You ejected. Then your ship crashed.");
+        }
+        
+        function isMouseOver(zone) {
+          return mouseX > zone.x && mouseX < zone.x + zone.w && mouseY > zone.y && mouseY < zone.y + zone.h;
+        }
     </script>
 
 </body>
