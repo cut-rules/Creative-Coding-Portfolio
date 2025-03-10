@@ -20,7 +20,7 @@
         let lastUpdateTime = 0;
         
         function preload() {
-          loadJSON("grammar.json", (data) => {
+          loadJSON("grammar(evilmirror).json", (data) => {
             evilGrammar = tracery.createGrammar(data);
             evilText = evilGrammar.flatten("#origin#");
           });
