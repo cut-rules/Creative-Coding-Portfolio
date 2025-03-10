@@ -71,10 +71,10 @@
         let frisbeeRadius = 40; // Frisbee size
 
         function preload() {
-            $.getJSON("grammar.json", function (data) {
+            $.getJSON("grammar(frisbeegenerator).json", function (data) {
                 grammarData = data;
             }).fail(function () {
-                generatedText = "Error: Could not load grammar.json";
+                generatedText = "Error: Could not load grammar(frisbeegenerator).json";
             });
         }
 
