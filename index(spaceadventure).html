@@ -102,8 +102,8 @@
         		metPerson=true;
         		meetPerson();
         	}
-        	if (gameState=="destroyed") image(endImage,0,0);
-        	else {image(roomImage,0,0);
+        	if (gameState=="destroyed") image(endImage,0,0,width,height);
+        	else {image(roomImage,0,0,width,height);
         	if (currentScreen.toLowerCase().includes("button")) drawButtons();
         			 }
           //text("zone: "+currentZone+",screen:"+currentScreen,mouseX,mouseY); //if you want to make sure stuff is lined up right
