@@ -43,40 +43,60 @@
         let messageTimer1 = -2000, messageTimer2 = -2000;
         const messageDuration = 2000;
         let metPerson = false;
-        let imgAspectRatio;
-        let imgWidth, imgHeight, imgX, imgY;
+        let zoneRN;
+        let canvasSize = 1000; // Base size to scale from
 
-        // ✅ Define cockpit zones BEFORE they are used
+        let outcomes = [
+            "You materialized inside a planet. Instantly crushed.",
+            "You teleported directly into a star. Vaporized on arrival.",
+            "You died. I'm not even sure what happened.",
+            "You phased halfway into an asteroid. The other half didn't make it.",
+            "You reappeared inside a black hole. Say goodbye to time itself.",
+            "You teleported into the middle of an ongoing space battle. Missiles incoming.",
+            "You ended up inside a sunken spaceship. Oxygen was never an option.",
+            "You appeared in a reactor core. At least it was quick.",
+            "You re-emerged in the middle of a supernova. Good luck with that.",
+            "You teleported to an empty void dimension. There is no escape."
+        ];
+
+        // Convert fixed values into percentages
         let cockpitZones = [
-            { name: "Lightspeed", x: 0.4, y: 0.8, w: 0.2, h: 0.1, action: lightspeed },
-            { name: "Fire", x: 0.6, y: 0.8, w: 0.2, h: 0.1, action: fire },
-            { name: "Joystick", x: 0.45, y: 0.55, w: 0.1, h: 0.2, action: joystick },
-            { name: "Eject", x: 0.75, y: 0.8, w: 0.15, h: 0.1, action: eject },
-            { name: "Info Screen", x: 0.4, y: 0.35, w: 0.2, h: 0.1, action: frontscreen }
+            { name: "Lightspeed", x: 355 / canvasSize, y: 730 / canvasSize, w: 75 / canvasSize, h: 60 / canvasSize, message: "You escape." },
+            { name: "Fire", x: 570 / canvasSize, y: 730 / canvasSize, w: 75 / canvasSize, h: 60 / canvasSize, message: "You fire ... and miss." },
+            { name: "Joystick", x: 462 / canvasSize, y: 560 / canvasSize, w: 76 / canvasSize, h: 150 / canvasSize, message: "Which direction do you want to move?" },
+            { name: "Eject", x: 740 / canvasSize, y: 730 / canvasSize, w: 50 / canvasSize, h: 40 / canvasSize, message: "Well that was a bad idea." },
+            { name: "Information Screen", x: 365 / canvasSize, y: 370 / canvasSize, w: 270 / canvasSize, h: 185 / canvasSize, message: "There seems to be a distress call coming from [2,1].", message2: "It looks like there is a gap in the unidentifiable spacecraft [1,0]" },
         ];
 
         function preload() {
-            backgroundImage = loadImage('pilotcockpitforgame.png', img => {
-                imgAspectRatio = img.width / img.height;
-            });
+            backgroundImage = loadImage('pilotcockpitforgame.png');
             endImage = loadImage('shipdestroyed.webp');
         }
 
-        function setup() { 
+        function setup() {
             createCanvas(windowWidth, windowHeight);
-            updateImageSize();
             showText("There is a sea of unusually shaped spacecraft in front of you.");
         }
 
         function draw() {
+            checkCursor();
             background(0);
             let img = gameState === "destroyed" ? endImage : backgroundImage;
 
-            image(img, imgX, imgY, imgWidth, imgHeight);
-
-            if (gameState === "playing") {
-                drawZones();
+            // Scale the image while keeping aspect ratio
+            let aspectRatio = backgroundImage.width / backgroundImage.height;
+            let imgWidth, imgHeight;
+            if (windowWidth / windowHeight > aspectRatio) {
+                imgHeight = windowHeight;
+                imgWidth = imgHeight * aspectRatio;
+            } else {
+                imgWidth = windowWidth;
+                imgHeight = imgWidth / aspectRatio;
             }
+
+            let imgX = (windowWidth - imgWidth) / 2;
+            let imgY = (windowHeight - imgHeight) / 2;
+            image(img, imgX, imgY, imgWidth, imgHeight);
 
             if (millis() - messageTimer1 < messageDuration) {
                 drawMessage(message1, height / 2);
@@ -86,51 +106,39 @@
             }
         }
 
-        function updateImageSize() {
-            if (windowWidth / windowHeight > imgAspectRatio) {
-                imgHeight = windowHeight;
-                imgWidth = imgHeight * imgAspectRatio;
-            } else {
-                imgWidth = windowWidth;
-                imgHeight = imgWidth / imgAspectRatio;
+        function checkCursor() {
+            zoneRN = "0";
+            let newZone = "noZone";
+            for (let zone of cockpitZones) {
+                if (isMouseOver(zone)) {
+                    newZone = zone.name;
+                    zoneRN = zone;
+                    break;
+                }
             }
-            imgX = (windowWidth - imgWidth) / 2;
-            imgY = (windowHeight - imgHeight) / 2;
+            currentZone = newZone;
+            cursor(currentZone !== "noZone" ? 'pointer' : 'default');
         }
 
-        function drawZones() {
-            fill(255, 255, 255, 100);
-            noStroke();
-            for (let zone of cockpitZones) {
-                let zx = imgX + imgWidth * zone.x;
-                let zy = imgY + imgHeight * zone.y;
-                let zw = imgWidth * zone.w;
-                let zh = imgHeight * zone.h;
-                rect(zx, zy, zw, zh); // ✅ Debugging rectangles (remove if not needed)
-            }
+        function isMouseOver(zone) {
+            let scaleX = width / canvasSize;
+            let scaleY = height / canvasSize;
+            return mouseX > zone.x * width && mouseX < (zone.x + zone.w) * width &&
+                   mouseY > zone.y * height && mouseY < (zone.y + zone.h) * height;
         }
 
-        function mousePressed() {
-            for (let zone of cockpitZones) {
-                let zx = imgX + imgWidth * zone.x;
-                let zy = imgY + imgHeight * zone.y;
-                let zw = imgWidth * zone.w;
-                let zh = imgHeight * zone.h;
-                
-                if (mouseX > zx && mouseX < zx + zw && mouseY > zy && mouseY < zy + zh) {
-                    zone.action();
-                    return;
+        function mouseClicked() {
+            if (currentZone !== "noZone") {
+                timePassed();
+                let functionName = currentZone == "Information Screen" ? "frontscreen" : currentZone.toLowerCase();
+                if (typeof window[functionName] === "function") {
+                    window[functionName]();
                 }
             }
         }
 
-        function showText(text) {
-            message1 = text;
-            messageTimer1 = millis();
-        }
-
         function drawMessage(message, yPos) {
-            fill(0, 180);
+            fill(0);
             rect(0, yPos - 25, width, 50);
             fill(255);
             textSize(24);
@@ -138,35 +146,15 @@
             text(message, width / 2, yPos);
         }
 
-        // ✅ FIXED: Defined all missing functions
-        function fire() {
-            agressive = true;
-            showText("It seems to do almost nothing. The ships quickly prepare to attack you back.");
-        }
-
-        function lightspeed() {
-            showText("You escape.");
-            gameState = "escaped";
-        }
-
-        function eject() {
-            showText("You ejected. Then your ship crashed.");
-            gameState = "destroyed";
-        }
-
-        function frontscreen() {
-            showText("There seems to be a distress call coming from [2,1].");
-            showText("It looks like there is a gap in the unidentifiable spacecraft [1,0].");
-        }
-
-        function joystick() {
-            showText("Joystick clicked. What direction will you move?");
+        function showText(text) {
+            message1 = text;
+            messageTimer1 = millis();
         }
 
         function windowResized() {
             resizeCanvas(windowWidth, windowHeight);
-            updateImageSize();
         }
+
     </script>
 
 </body>
