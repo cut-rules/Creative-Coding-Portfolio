@@ -72,7 +72,7 @@
         
         function setup() { 
             createCanvas(Math.min(windowWidth,windowHeight),Math.min(windowWidth,windowHeight));
-            canvas.position((windowWidth - canvasWidth) / (windowHeight - canvasHeight) / 2);
+            canvas.position((windowWidth-Math.min(windowWidth,windowHeight))/2,(windowHeight - Math.min(windowWidth,windowHeight)) / 2);
         	showText("There is a sea of unusually shaped spacecraft in front of you.");
             buttons = [
               { name: "button1", x: 250*Math.min(windowWidth,windowHeight)/1000, y: 350*Math.min(windowWidth,windowHeight)/1000, w: 200*Math.min(windowWidth,windowHeight)/1000, h: 100*Math.min(windowWidth,windowHeight)/1000, question: "Temp"},
