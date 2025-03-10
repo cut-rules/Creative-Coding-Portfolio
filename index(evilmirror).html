@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evil Mirror</title>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="tracery.min.js"></script>
+    <script src="p5.min.js"></script>
+    <script src="ml5.min.js"></script>
+</head>
+<body>
+    <script>
+        let video;
+        let faceMesh;
+        let faces = [];
+        let maskTriangles = []; // Store static mask shapes
+        let evilGrammar;
+        let evilText = "";
+        let lastUpdateTime = 0;
+        
+        function preload() {
+          loadJSON("grammar.json", (data) => {
+            evilGrammar = tracery.createGrammar(data);
+            evilText = evilGrammar.flatten("#origin#");
+          });
+        }
+        
+        function setup() {
+          createCanvas(windowWidth, windowHeight);
+          video = createCapture(VIDEO);
+          video.hide();
+        
+          console.log("Initializing FaceMesh...");
+          faceMesh = ml5.facemesh(video, modelLoaded);
+          faceMesh.on("predict", gotFaces);
+        }
+        
+        function modelLoaded() {
+          console.log("FaceMesh model loaded successfully.");
+        }
+        
+        function gotFaces(results) {
+          faces = results;
+          console.log("Detected faces:", results);
+          
+          if (faces.length > 0) {
+            let face = faces[0];
+            let annotations = face.annotations;
+            
+            if (!annotations) {
+              console.warn("No annotations found for detected face.");
+              return;
+            }
+            
+            // Generate static mask shapes only once
+            maskTriangles = [];
+            let allFeatures = Object.keys(annotations);
+            for (let feature of allFeatures) {
+              if (annotations[feature]) {
+                for (let i = 0; i < annotations[feature].length; i += 2) { // More dense coverage
+                  let [x, y] = annotations[feature][i];
+                  x = annotations[feature][i][0];
+                  y = annotations[feature][i][1];
+                  let size = random(20, 50); // Larger, more dominant mask shapes
+                  maskTriangles.push({ x, y, size });
+                }
+              }
+            }
+          }
+        }
+        
+        function draw() {
+          background(0);
+          let aspectRatio = video.width / video.height;
+          let canvasAspect = windowWidth / windowHeight;
+          let drawWidth, drawHeight;
+          
+          if (canvasAspect > aspectRatio) {
+            drawHeight = windowHeight;
+            drawWidth = drawHeight * aspectRatio;
+          } else {
+            drawWidth = windowWidth;
+            drawHeight = drawWidth / aspectRatio;
+          }
+          
+          let xOffset = (windowWidth - drawWidth) / 2;
+          let yOffset = (windowHeight - drawHeight) / 2;
+          
+          image(video, xOffset, yOffset, drawWidth, drawHeight);
+          
+          if (faces.length > 0) {
+            let face = faces[0];
+            let annotations = face.annotations;
+            
+            if (!annotations) {
+              console.warn("No annotations found for detected face.");
+              return;
+            }
+            
+            // Draw static black mask using stored triangles
+            fill(0);
+            noStroke();
+            for (let t of maskTriangles) {
+              beginShape();
+              for (let j = 0; j < 3; j++) {
+                vertex(xOffset + map(t.x, 0, video.width, 0, drawWidth) + random(-t.size, t.size), yOffset + map(t.y, 0, video.height, 0, drawHeight) + random(-t.size, t.size));
+              }
+              endShape(CLOSE);
+            }
+        
+            // Draw smaller, more frequent glitch shapes randomly over the full face
+            let allFeatures = Object.keys(annotations);
+            for (let feature of allFeatures) {
+              if (annotations[feature]) {
+                for (let i = 0; i < annotations[feature].length; i++) {
+                  let [x, y] = annotations[feature][i];
+                  let size = random(3, 10)*drawHeight/video.height; // Smaller glitch shapes
+                  let col = color(random(255), random(255), random(255), 180);
+                  fill(col);
+                  noStroke();
+                  
+                  if (random() > 0.5) {
+                    triangle(
+                      xOffset + map(x, 0, video.width, 0, drawWidth) + random(-size, size), yOffset + map(y, 0, video.height, 0, drawHeight) + random(-size, size),
+                      xOffset + map(x, 0, video.width, 0, drawWidth) + random(-size, size), yOffset + map(y, 0, video.height, 0, drawHeight) + random(-size, size),
+                      xOffset + map(x, 0, video.width, 0, drawWidth) + random(-size, size), yOffset + map(y, 0, video.height, 0, drawHeight) + random(-size, size)
+                    );
+                  } else {
+                    rect(xOffset + map(x, 0, video.width, 0, drawWidth) - size / 2, yOffset + map(y, 0, video.height, 0, drawHeight) - size / 2, size, size);
+                  }
+                }
+              }
+            }
+          }
+          
+          // Draw semi-transparent black rectangle at the top with text
+          fill(0, 150);
+          rect(0, 30, width, 50);
+          fill(255);
+          textSize(16);
+          textAlign(CENTER, CENTER);
+          text(evilText, width *.05, 55, width *.9);
+          
+          let currentTime = millis();
+          if (currentTime - lastUpdateTime > 10000 && evilGrammar) {
+            evilText = evilGrammar.flatten("#speak#");
+            lastUpdateTime = currentTime;
+          }
+        }
+    </script>
+</body>
+</html>

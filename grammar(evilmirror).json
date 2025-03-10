@@ -1,0 +1,50 @@
+{
+  "origin": [
+    "#greeting# #threat#"
+  ],
+  "speak":[
+    "#threat#",
+    "#insight#",
+    "#taunt#",
+    "#prediction#",
+    "#mockery#",
+    "#threat#",
+    "#insight#"
+  ],
+  "greeting": [
+    "Ah, we meet again...",
+    "You can’t escape me, can you?",
+    "I am always watching.",
+    "Hello, my weaker self."
+  ],
+  "threat": [
+    "I will unmake you.",
+    "Your mind is a house of glass, and I hold the first stone.",
+    "Every step you take is another misstep I’ve planned.",
+    "Soon, you won’t recognize yourself."
+  ],
+  "insight": [
+    "You already know how this ends.",
+    "You build and I destroy. That is our nature.",
+    "Every decision you make is one I’ve already anticipated.",
+    "The difference between us? I don’t hesitate."
+  ],
+  "taunt": [
+    "You think you’re clever? You’re a shadow of me.",
+    "No matter how hard you try, you’ll never outthink me.",
+    "Every victory you claim is just a game I let you play.",
+    "You stumble through your own life like a blind man in a maze."
+  ],
+  "prediction": [
+    "Soon, you will doubt everything.",
+    "You will look in the mirror and see only me.",
+    "In the end, your choices were never yours to begin with.",
+    "You will beg for my guidance before the end."
+  ],
+  "mockery": [
+    "Pathetic.",
+    "Still trying, I see.",
+    "Amusing, how you cling to hope.",
+    "Such fragile confidence."
+  ]
+}

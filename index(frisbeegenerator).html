@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frisbee Article Generator</title>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="p5.min.js"></script>
+    <script src="tracery.min.js"></script>
+    <style>
+        /* Newspaper-style styling */
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #5c5a5a;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        canvas {
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: justify;
+            column-count: 2;
+            column-gap: 40px;
+        }
+
+        /* Style for the generated text */
+        .generated-text {
+            font-size: 1.1rem;
+            color: #444;
+            text-indent: 1.5em;
+        }
+
+        /* Drop cap for the first paragraph */
+        .generated-text::first-letter {
+            font-size: 3rem;
+            float: left;
+            line-height: 1;
+            margin-right: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Frisbee Article Generator</h1>
+    <script>
+        let grammarData;
+        let generatedText = "";
+        let generatedTitle = "";
+        let frisbeeColor = "red"; // Default color
+
+        let frisbeeX, frisbeeY; // Position of the frisbee
+        let speedX, speedY; // Speed of the frisbee
+        let frisbeeRadius = 40; // Frisbee size
+
+        function preload() {
+            $.getJSON("grammar.json", function (data) {
+                grammarData = data;
+            }).fail(function () {
+                generatedText = "Error: Could not load grammar.json";
+            });
+        }
+
+        function setup() {
+            createCanvas(windowWidth * 7 / 8, windowHeight * 3 / 4);
+            textSize(16);
+            textAlign(CENTER, CENTER);
+            fill(0);
+
+            tryStartGenerating();
+
+            // Set a random starting position inside the right third of the screen
+            frisbeeX = random(width * 2 / 3 + frisbeeRadius, width - frisbeeRadius);
+            frisbeeY = random(frisbeeRadius, height - frisbeeRadius);
+
+            // Set random speeds, ensuring they aren't too slow
+            speedX = random(3, 6) * (random() > 0.5 ? 1 : -1); // Random positive or negative
+            speedY = random(3, 6) * (random() > 0.5 ? 1 : -1);
+        }
+
+        function tryStartGenerating(attempt = 1) {
+            if (grammarData) {
+                console.log("Grammar data loaded. Starting text generation.");
+                startGenerating();
+                generateFrisbeeColor(); // Generate frisbee color once grammar is ready
+            } else if (attempt <= 5) {
+                console.error(`Grammar data not loaded (attempt ${attempt}). Retrying in 1 second...`);
+                setTimeout(() => tryStartGenerating(attempt + 1), 1000);
+            } else {
+                console.error("Failed to load grammar data after multiple attempts.");
+                generatedText = "Error: Could not load grammar data.";
+            }
+        }
+
+        function draw() {
+            background(240);
+
+            // Draw title
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            fill(0);
+            textStyle(BOLD);
+            text(generatedTitle, width / 4, height / 16, width / 2, height * 1 / 8);
+
+            // Draw text content
+            textSize(16);
+            textStyle(NORMAL);
+            text(generatedText, width / 8, height / 4, width * 3 / 8, height * 5 / 8);
+
+            // Draw the bouncing frisbee
+            drawFrisbee();
+            moveFrisbee();
+        }
+
+        function drawFrisbee() {
+            noFill();
+            stroke(0); // Black outline for frisbee rings    
+            fill(frisbeeColor);
+            ellipse(frisbeeX, frisbeeY, frisbeeRadius * 2);
+        
+            // Draw the three concentric outline circles (frisbee ridges)
+            noFill(); // No fill for the ridges
+            for (let i = 1; i <= 3; i++) {
+                ellipse(frisbeeX, frisbeeY, frisbeeRadius * (1.1 - i * 0.05) * 2);
+            }
+            // Draw the star in the center of the frisbee
+            noStroke();
+            fill(0);
+            drawStar(frisbeeX, frisbeeY, frisbeeRadius * 0.5, frisbeeRadius * 0.2, 5);
+        }
+
+// Function to draw a star at a given position
+        function drawStar(x, y, radius1, radius2, numPoints) {
+            fill(255, 215, 0); // Gold star
+            beginShape();
+            let angleStep = PI / numPoints; // Alternate angles for points
+            for (let i = 0; i < TWO_PI; i += angleStep) {
+                let r = i % (angleStep * 2) === 0 ? radius1 : radius2;
+                let sx = x + cos(i) * r;
+                let sy = y + sin(i) * r;
+                vertex(sx, sy);
+            }
+            endShape(CLOSE);
+        }
+
+
+        function moveFrisbee() {
+            // Move the frisbee
+            frisbeeX += speedX;
+            frisbeeY += speedY;
+
+            // Bounce off right wall
+            if (frisbeeX + frisbeeRadius > width) {
+                speedX *= -1;
+                frisbeeX = width - frisbeeRadius;
+            }
+            // Bounce off left boundary of right third
+            if (frisbeeX - frisbeeRadius < width * 2 / 3) {
+                speedX *= -1;
+                frisbeeX = width * 2 / 3 + frisbeeRadius;
+            }
+            // Bounce off top and bottom
+            if (frisbeeY + frisbeeRadius > height) {
+                speedY *= -1;
+                frisbeeY = height - frisbeeRadius;
+            }
+            if (frisbeeY - frisbeeRadius < 0) {
+                speedY *= -1;
+                frisbeeY = frisbeeRadius;
+            }
+        }
+
+        function generateText() {
+            if (!grammarData) {
+                generatedText = "Error: Grammar not loaded yet.";
+                generatedTitle = "Error: Grammar not loaded yet.";
+                return;
+            }
+
+            let grammar = tracery.createGrammar(grammarData);
+            generatedTitle = grammar.flatten("#articleName#");
+            generatedText = grammar.flatten("#origin#");
+        }
+
+        function startGenerating() {
+            generateText();
+            setInterval(generateText, 10000);
+        }
+
+        function generateFrisbeeColor() {
+            if (grammarData) {
+                let grammar = tracery.createGrammar(grammarData);
+                frisbeeColor = grammar.flatten("#color#");
+                console.log("Generated Frisbee Color:", frisbeeColor);
+            }
+        }
+    </script>
+</body>
+</html>

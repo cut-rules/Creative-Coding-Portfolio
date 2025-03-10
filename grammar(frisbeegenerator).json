@@ -1,0 +1,604 @@
+{
+    "origin": ["#paragraph1##paragraph2##paragraph3#"],
+    "articleName": ["#tournament# #articleWhen#"],
+    "articleWhen": ["Recap","Preview","Day 1 Recap","Day 2 Recap","Mid Tournament Evaluation"],
+    "color": ["red", "blue", "green", "purple", "orange"],
+
+  "paragraph1": ["In #Gregorian_calendar_month.capitalize#, #team_name# (strong #contestant#) will play #team_name# in #match.s# on #weekday# at #tournament#. Leading the squad is #player_name#, a #quality# leader with #property#. Over the #time_period#, they've #travel# and #journey# across #region#, gathering intel to #evaluate# a new #formation#. According to #army_unit#, there's a #possibility# they'll #act# with #force# to #arouse# #people#'s #noise#. "],
+
+  "paragraph2": ["During this #condition# #time#,  #player_name# delivered a #speech_act# about a #digit#-#point# plan. With a #large_indefinite_quantity# advantage, they could #be# #large_integer# steps ahead. A good #activity# here would be a #message# to the rest of the divison. Meanwhile, rumors say #small_indefinite_quantity# changes are looming. "],
+
+  "paragraph3": ["Looking ahead to the #season#, #team_name#, strong #rival#, stands in the way of #decision_making#. A source shared #information# about a #beginning# #change# in #state# that could #look# like #danger#. Some #motion# within the #collection# of #natural_object# reveals a #rank# #happening#. If the team can #move# with #propulsion# and #succeed#, they might #give# #team_name# a #content# #object# of victory."],
+  "team_name": [
+        "Cal Poly Slo Slocore",
+        "Carleton CUT",
+        "Georgia Jojah",
+        "Pitt En Sabah Nur",
+        "UNC Darkside",
+        "Oregon Ego",
+        "Colorado Mamabird",
+        "UMass Zoodisc",
+        "Texas Tuff",
+        "UW Sundodgers",
+        "Oregon State University Beavers",
+        "Georgia Tech Tribe",
+        "Vermont Chill",
+        "Cal Ursa Major",
+        "WashU Contra",
+        "Penn State Spank",
+        "South Carolina Gamecock",
+        "Wisconsin Hodags",
+        "Minnesota Grey Duck",
+        "Northeastern Huskies",
+        "Brown Brownian Motion",
+        "Vermont Ruckus",
+        "UBC Thunderbirds",
+         "UNC Pleiades",
+        "Oregon Fugue",
+        "Colorado Quandary",
+        "Carleton Syzygy",
+        "UCSD Dragon Coalition",
+        "Tufts Elephant Women",
+        "Cal Poly Slo Slo Motion",
+        "Stanford Superfly",
+        "Burning Skirts"
+  ],
+  "player_name": [
+        "Declan Miller",
+        "Xavier Fuzat",
+        "Tristan Yarter",
+        "Aiden Downey",
+        "Gavin Abrahamson",
+        "Mica Glass",
+        "Tobias Brooks",
+        "Anton Orme",
+        "Ben Dameron",
+        "Carter Bayer",
+        "Felix Moren",
+        "Adam Grossberg",
+        "Cam Freeman",
+        "Logan Piercy",
+        "Aaron Bartlett",
+        "Casey Thornton",
+        "Erica Birdsong",
+        "Chagall Gelfand",
+        "Caroline Stone",
+        "Clil Phillips",
+        "Madison Ong",
+        "Trout Weybright",
+        "Emily Kemp",
+        "Tori Grey",
+        "Grace Maroon",
+        "Amelia Hawkins"
+    ],
+    "quality": [
+        "ultimate",
+        "power",
+        "difference",
+        "appearance",
+        "ability",
+        "powers",
+        "nature",
+        "bad",
+        "appearances",
+        "ultimates",
+        "goodness"
+    ],
+    "container": [
+        "can",
+        "cup",
+        "empty",
+        "bag"
+    ],
+    "time_period": [
+        "season",
+        "weekend",
+        "year",
+        "weeks",
+        "seasons",
+        "morning",
+        "weekends",
+        "months",
+        "times",
+        "night",
+        "tournament",
+        "game",
+        "point"
+    ],
+    "travel": [
+        "follow",
+        "returning",
+        "journey",
+        "came",
+        "panning",
+        "followed",
+        "falling"
+    ],
+    "journey": [
+        "tour",
+        "pilgrimage",
+        "outing",
+        "trip"
+    ],
+    "information": [
+        "format",
+        "secret",
+        "details",
+        "fact"
+    ],
+    "speech_act": [
+        "promises",
+        "bids",
+        "bid",
+        "offers",
+        "boast",
+        "boasts",
+        "offer"
+    ],
+    "chemical_element": [
+        "as",
+        "at",
+        "i",
+        "ac",
+        "he",
+        "hes",
+        "si"
+    ],
+    "possibility": [
+        "potential",
+        "opportunities",
+        "chance",
+        "opportunity",
+        "possible"
+    ],
+    "contestant": [
+        "contenders",
+        "opponents",
+        "rivals",
+        "contender",
+        "players",
+        "challengers",
+        "competitors",
+        "winners",
+        "qualifiers",
+        "challengers"
+    ],
+    "army_unit": [
+        "divisions",
+        "division",
+        "squads",
+        "squad"
+    ],
+    "noise": [
+        "clash",
+        "rumble",
+        "crash",
+        "clashes",
+        "roar",
+        "squeak"
+    ],
+    "property": [
+        "strength",
+        "way",
+        "level",
+        "features",
+        "mode",
+        "things",
+        "characteristic",
+        "style",
+        "consistency",
+        "trust",
+        "connectivity",
+        "strengths"
+    ],
+    "formation": [
+        "line",
+        "backfield",
+        "rear",
+        "lines",
+        "flights"
+    ],
+    "match": [
+        "semi",
+        "final",
+        "quarterfinal",
+        "crossover",
+        "pool play",
+        "pre-quarterfinal"
+    ],
+    "weekday": [
+        "Monday",
+        "Sunday",
+        "Saturday",
+        "Friday"
+    ],
+    "condition": [
+        "need",
+        "danger",
+        "luck",
+        "needs"
+    ],
+    "digit": [
+        "three",
+        "6",
+        "9",
+        "2",
+        "4",
+        "5",
+        "7",
+        "four",
+        "one",
+        "1",
+        "3",
+        "8",
+        "ones",
+        "two",
+        "five",
+        "nine",
+        "trio",
+        "seven",
+        "six",
+        "eight",
+        "trinity"
+    ],
+    "act": [
+        "action",
+        "going",
+        "continues",
+        "continue",
+        "trying",
+        "production",
+        "departure",
+        "leaving",
+        "getting",
+        "stormed",
+        "respond",
+        "continued",
+        "took",
+        "tried",
+        "taken"
+    ],
+    "arouse": [
+        "exciting",
+        "excited",
+        "invited",
+        "overwhelming"
+    ],
+    "activity": [
+        "games",
+        "work",
+        "attempt",
+        "help",
+        "game",
+        "use",
+        "supporting",
+        "try",
+        "measuring"
+    ],
+    "force": [
+        "staff",
+        "mens",
+        "men",
+        "momentum",
+        "torque"
+    ],
+    "large_indefinite_quantity": [
+        "pack",
+        "lot",
+        "much",
+        "dozens"
+    ],
+    "Gregorian_calendar_month": [
+        "february",
+        "may",
+        "january",
+        "march",
+        "april",
+        "januarys"
+    ],
+    "large_integer": [
+        "15",
+        "13",
+        "12",
+        "14",
+        "16",
+        "19",
+        "11",
+        "17",
+        "21",
+        "25",
+        "23",
+        "22",
+        "24",
+        "20",
+        "ten",
+        "10",
+        "18",
+        "60s",
+        "30",
+        "50",
+        "twenty",
+        "fourteen",
+        "70s",
+        "100",
+        "1000",
+        "50s"
+    ],
+    "be": [
+        "live",
+        "seem",
+        "proven",
+        "remain",
+        "defined",
+        "prove",
+        "belong",
+        "abounds",
+        "depends",
+        "appeared",
+        "proving",
+        "depend",
+        "ranked",
+        "staying",
+        "remained",
+        "attend",
+        "proved"
+    ],
+    "message": [
+        "broadcasts",
+        "broadcast",
+        "statement",
+        "story"
+    ],
+    "tract": [
+        "field",
+        "short",
+        "sites",
+        "site",
+        "midway"
+    ],
+    "end": [
+        "close",
+        "destination",
+        "finished",
+        "last",
+        "broken",
+        "tip",
+        "complete"
+    ],
+    "kind": [
+        "make",
+        "likes",
+        "like",
+        "makes",
+        "types",
+        "type"
+    ],
+    "point": [
+        "spot",
+        "then",
+        "place",
+        "moments",
+        "position",
+        "moment"
+    ],
+    "position": [
+        "slot",
+        "left",
+        "lean",
+        "post",
+        "aiming"
+    ],
+    "person": [
+        "have",
+        "closer",
+        "nationals",
+        "national",
+        "relative",
+        "fighters",
+        "straight",
+        "leo",
+        "travelers",
+        "unfortunate",
+        "friend",
+        "friends"
+    ],
+    "small_indefinite_quantity": [
+        "serving",
+        "little",
+        "smattering",
+        "bit"
+    ],
+    "maneuver": [
+        "measure",
+        "step",
+        "blitz",
+        "measures"
+    ],
+    "evaluate": [
+        "expect",
+        "anticipated",
+        "figured",
+        "expected"
+    ],
+    "region": [
+        "top",
+        "outside",
+        "sides",
+        "side",
+        "inside",
+        "territory",
+        "hells"
+    ],
+    "set": [
+        "bracket",
+        "core",
+        "cores",
+        "pair"
+    ],
+    "time": [
+        "while",
+        "past",
+        "present",
+        "ut"
+    ],
+    "location": [
+        "region",
+        "theres",
+        "there",
+        "here",
+        "heres",
+        "regions"
+    ],
+    "object": [
+        "except",
+        "ground",
+        "location",
+        "remains"
+    ],
+    "decision_making": [
+        "judging",
+        "pick",
+        "choices",
+        "choice"
+    ],
+    "beginning": [
+        "start",
+        "kickoff",
+        "debut",
+        "scrum",
+        "debuts",
+        "starts"
+    ],
+    "actor": [
+        "heavy",
+        "powerhouse",
+        "powerhouses",
+        "extra"
+    ],
+    "look": [
+        "looming",
+        "glimpse",
+        "watching",
+        "glimpses"
+    ],
+    "rank": [
+        "first",
+        "tier",
+        "sixth",
+        "fourth"
+    ],
+    "state": [
+        "status",
+        "being",
+        "answered",
+        "grace",
+        "commonwealth",
+        "replied"
+    ],
+    "propulsion": [
+        "pushes",
+        "drive",
+        "shot",
+        "push",
+        "pull",
+        "pushing"
+    ],
+    "rival": [
+        "champions",
+        "champ",
+        "finalists",
+        "champs",
+        "semifinalists"
+    ],
+    "change": [
+        "affected",
+        "adapt",
+        "warm",
+        "demotion",
+        "dizzying",
+        "filled",
+        "sharpen"
+    ],
+    "motion": [
+        "traveling",
+        "coming",
+        "chase",
+        "closing"
+    ],
+    "people": [
+        "poor",
+        "lost",
+        "peoples",
+        "free"
+    ],
+    "content": [
+        "goal",
+        "goals",
+        "thoughts",
+        "idea"
+    ],
+    "collection": [
+        "data",
+        "set",
+        "galaxy",
+        "class",
+        "combination"
+    ],
+    "season": [
+        "fall",
+        "spring",
+        "preseason",
+        "autumn"
+    ],
+    "natural_object": [
+        "stone",
+        "world",
+        "rock",
+        "universe"
+    ],
+    "happening": [
+        "success",
+        "change",
+        "cases",
+        "beginning",
+        "changes"
+    ],
+    "move": [
+        "teetering",
+        "lifting",
+        "crowded",
+        "carrying",
+        "pushed",
+        "dropped",
+        "drawn",
+        "dispel",
+        "bustling"
+    ],
+    "danger": [
+        "vulnerability",
+        "threat",
+        "risk",
+        "peril"
+    ],
+    "succeed": [
+        "pegged",
+        "pegging",
+        "manage",
+        "managing"
+    ],
+    "give": [
+        "provide",
+        "provided",
+        "granted",
+        "paying"
+    ],
+    "girl": [
+        "dames",
+        "belles",
+        "maiden",
+        "dame"
+    ],
+    "tournament": [
+     "Santa Barbara Invite", "Pres Day Invite", "Florida Warm Up", "Queen City Tune Up", "Easterns", "Northwest Challenge", "Centex", "Nationals"
+]
+}
