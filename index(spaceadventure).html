@@ -7,19 +7,9 @@
     <script src="p5.min.js"></script> <!-- Ensure this file is in your repo -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #111;
-            color: white;
             margin: 0;
             overflow: hidden; /* Prevents scrolling */
-        }
-        canvas {
-            display: block;
+            background-color: #111;
         }
         .back-button {
             position: fixed;
@@ -42,7 +32,6 @@
 <body>
 
     <a href="index.html" class="back-button">⬅ Back to Home</a>
-    <h1>Space Adventure</h1>
 
     <script>
         let backgroundImage, endImage;
@@ -55,28 +44,35 @@
         const messageDuration = 2000;
         let metPerson = false;
         let zoneRN;
-        let canvasWidth, canvasHeight;
+        let imgAspectRatio;
 
         function preload() {
-            backgroundImage = loadImage('pilotcockpitforgame.png');
+            backgroundImage = loadImage('pilotcockpitforgame.png', img => {
+                imgAspectRatio = img.width / img.height;
+            });
             endImage = loadImage('shipdestroyed.webp');
         }
 
         function setup() { 
-            canvasWidth = windowWidth;
-            canvasHeight = windowHeight;
-            createCanvas(canvasWidth, canvasHeight);
+            createCanvas(windowWidth, windowHeight);
             showText("There is a sea of unusually shaped spacecraft in front of you.");
         }
 
         function draw() {
             background(0);
+            let img = gameState === "destroyed" ? endImage : backgroundImage;
 
-            if (gameState === "destroyed") {
-                image(endImage, 0, 0, canvasWidth, canvasHeight); // Scale properly
+            // Calculate the largest size that fits while maintaining aspect ratio
+            let imgWidth, imgHeight;
+            if (windowWidth / windowHeight > imgAspectRatio) {
+                imgHeight = windowHeight;
+                imgWidth = imgHeight * imgAspectRatio;
             } else {
-                image(backgroundImage, 0, 0, canvasWidth, canvasHeight); // Scale properly
+                imgWidth = windowWidth;
+                imgHeight = imgWidth / imgAspectRatio;
             }
+
+            image(img, (windowWidth - imgWidth) / 2, (windowHeight - imgHeight) / 2, imgWidth, imgHeight);
 
             if (millis() - messageTimer1 < messageDuration) {
                 drawMessage(message1, height / 2);
@@ -92,7 +88,7 @@
         }
 
         function drawMessage(message, yPos) {
-            fill(0, 180); // Semi-transparent black box
+            fill(0, 180);
             rect(0, yPos - 25, width, 50);
             fill(255);
             textSize(24);
@@ -136,9 +132,7 @@
         }
 
         function windowResized() {
-            canvasWidth = windowWidth;
-            canvasHeight = windowHeight;
-            resizeCanvas(canvasWidth, canvasHeight);
+            resizeCanvas(windowWidth, windowHeight);
         }
     </script>
 
