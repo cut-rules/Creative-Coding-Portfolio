@@ -44,6 +44,9 @@
         const messageDuration = 2000;
         let metPerson = false;
         let imgAspectRatio;
+        let imgWidth, imgHeight, imgX, imgY;
+
+        // ✅ Define cockpit zones BEFORE they are used
         let cockpitZones = [
             { name: "Lightspeed", x: 0.4, y: 0.8, w: 0.2, h: 0.1, action: lightspeed },
             { name: "Fire", x: 0.6, y: 0.8, w: 0.2, h: 0.1, action: fire },
@@ -61,6 +64,7 @@
 
         function setup() { 
             createCanvas(windowWidth, windowHeight);
+            updateImageSize();
             showText("There is a sea of unusually shaped spacecraft in front of you.");
         }
 
@@ -68,22 +72,10 @@
             background(0);
             let img = gameState === "destroyed" ? endImage : backgroundImage;
 
-            // Scale the image while keeping aspect ratio
-            let imgWidth, imgHeight;
-            if (windowWidth / windowHeight > imgAspectRatio) {
-                imgHeight = windowHeight;
-                imgWidth = imgHeight * imgAspectRatio;
-            } else {
-                imgWidth = windowWidth;
-                imgHeight = imgWidth / imgAspectRatio;
-            }
-
-            let imgX = (windowWidth - imgWidth) / 2;
-            let imgY = (windowHeight - imgHeight) / 2;
             image(img, imgX, imgY, imgWidth, imgHeight);
 
             if (gameState === "playing") {
-                drawZones(imgX, imgY, imgWidth, imgHeight);
+                drawZones();
             }
 
             if (millis() - messageTimer1 < messageDuration) {
@@ -94,7 +86,19 @@
             }
         }
 
-        function drawZones(imgX, imgY, imgWidth, imgHeight) {
+        function updateImageSize() {
+            if (windowWidth / windowHeight > imgAspectRatio) {
+                imgHeight = windowHeight;
+                imgWidth = imgHeight * imgAspectRatio;
+            } else {
+                imgWidth = windowWidth;
+                imgHeight = imgWidth / imgAspectRatio;
+            }
+            imgX = (windowWidth - imgWidth) / 2;
+            imgY = (windowHeight - imgHeight) / 2;
+        }
+
+        function drawZones() {
             fill(255, 255, 255, 100);
             noStroke();
             for (let zone of cockpitZones) {
@@ -102,7 +106,21 @@
                 let zy = imgY + imgHeight * zone.y;
                 let zw = imgWidth * zone.w;
                 let zh = imgHeight * zone.h;
-                rect(zx, zy, zw, zh);
+                rect(zx, zy, zw, zh); // ✅ Debugging rectangles (remove if not needed)
+            }
+        }
+
+        function mousePressed() {
+            for (let zone of cockpitZones) {
+                let zx = imgX + imgWidth * zone.x;
+                let zy = imgY + imgHeight * zone.y;
+                let zw = imgWidth * zone.w;
+                let zh = imgHeight * zone.h;
+                
+                if (mouseX > zx && mouseX < zx + zw && mouseY > zy && mouseY < zy + zh) {
+                    zone.action();
+                    return;
+                }
             }
         }
 
@@ -120,6 +138,7 @@
             text(message, width / 2, yPos);
         }
 
+        // ✅ FIXED: Defined all missing functions
         function fire() {
             agressive = true;
             showText("It seems to do almost nothing. The ships quickly prepare to attack you back.");
@@ -140,34 +159,13 @@
             showText("It looks like there is a gap in the unidentifiable spacecraft [1,0].");
         }
 
-        function mousePressed() {
-            let imgWidth, imgHeight;
-            if (windowWidth / windowHeight > imgAspectRatio) {
-                imgHeight = windowHeight;
-                imgWidth = imgHeight * imgAspectRatio;
-            } else {
-                imgWidth = windowWidth;
-                imgHeight = imgWidth / imgAspectRatio;
-            }
-
-            let imgX = (windowWidth - imgWidth) / 2;
-            let imgY = (windowHeight - imgHeight) / 2;
-
-            for (let zone of cockpitZones) {
-                let zx = imgX + imgWidth * zone.x;
-                let zy = imgY + imgHeight * zone.y;
-                let zw = imgWidth * zone.w;
-                let zh = imgHeight * zone.h;
-                
-                if (mouseX > zx && mouseX < zx + zw && mouseY > zy && mouseY < zy + zh) {
-                    zone.action();
-                    return;
-                }
-            }
+        function joystick() {
+            showText("Joystick clicked. What direction will you move?");
         }
 
         function windowResized() {
             resizeCanvas(windowWidth, windowHeight);
+            updateImageSize();
         }
     </script>
 
