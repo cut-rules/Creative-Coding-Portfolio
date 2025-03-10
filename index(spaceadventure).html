@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Adventure</title>
+    <script src="p5.min.js"></script> <!-- Ensure this file is in your repo -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #111;
+            color: white;
+        }
+        canvas {
+            border: 2px solid white;
+        }
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background-color: #005f73;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-button">⬅ Back to Home</a>
+    <h1>Space Adventure</h1>
+
+    <script>
+        let backgroundImage, endImage;
+        let gameState = "playing";
+        let agressive = false;
+        let xlocation = 0, ylocation = 0;
+        let moves = 6;
+        let message1 = "", message2 = "";
+        let messageTimer1 = -2000, messageTimer2 = -2000;
+        const messageDuration = 2000;
+        let metPerson = false;
+        let zoneRN;
+
+        let outcomes = [
+            "You materialized inside a planet. Instantly crushed.",
+            "You teleported directly into a star. Vaporized on arrival.",
+            "You died. I'm not even sure what happened.",
+            "You phased halfway into an asteroid. The other half didn't make it.",
+            "You reappeared inside a black hole. Say goodbye to time itself.",
+            "You teleported into the middle of an ongoing space battle. Missiles incoming.",
+            "You ended up inside a sunken spaceship. Oxygen was never an option.",
+            "You appeared in a reactor core. At least it was quick.",
+            "You re-emerged in the middle of a supernova. Good luck with that.",
+            "You teleported to an empty void dimension. There is no escape."
+        ];
+
+        function preload() {
+            backgroundImage = loadImage('pilotcockpitforgame.png');
+            endImage = loadImage('shipdestroyed.webp');
+        }
+
+        function setup() { 
+            createCanvas(800, 800);
+            showText("There is a sea of unusually shaped spacecraft in front of you.");
+        }
+
+        function draw() {
+            background(200);
+            if (gameState === "destroyed") {
+                image(endImage, 0, 0);
+            } else {
+                image(backgroundImage, 0, 0);
+            }
+
+            if (millis() - messageTimer1 < messageDuration) {
+                drawMessage(message1, height / 2);
+            }
+            if (millis() - messageTimer2 < messageDuration) {
+                drawMessage(message2, height / 2 + 60);
+            }
+        }
+
+        function showText(text) {
+            message1 = text;
+            messageTimer1 = millis();
+        }
+
+        function drawMessage(message, yPos) {
+            fill(0);
+            rect(0, yPos - 25, width, 50);
+            fill(255);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            text(message, width / 2, yPos);
+        }
+
+        function fire() {
+            agressive = true;
+            showText("It seems to do almost nothing. The ships quickly prepare to attack you back.");
+        }
+
+        function lightspeed() {
+            showText("You escape.");
+            gameState = "escaped";
+        }
+
+        function eject() {
+            showText("You ejected. Then your ship crashed.");
+            gameState = "destroyed";
+        }
+
+        function meetPerson() {
+            showText("You pick the pod that was sending the distress signal.");
+            showText("The spaceships around it aggressively turn towards you.");
+        }
+
+        function frontscreen() {
+            showText("There seems to be a distress call coming from [2,1].");
+            showText("It looks like there is a gap in the unidentifiable spacecraft [1,0].");
+        }
+
+        function escape() {
+            if (metPerson) showText("You saved something ... and got away. Nice job!");
+            else if (agressive) showText("Well at least you didn't die.");
+            else {
+                showText("It would have been nice to answer the distress call. That one might come back to bite you.");
+                showText("You did escape though.");
+            }
+            gameState = "escaped";
+        }
+    </script>
+
+</body>
+</html>
