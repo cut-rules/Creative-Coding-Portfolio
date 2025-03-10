@@ -71,8 +71,13 @@
         }
         
         function setup() { 
-            canvas=createCanvas(Math.min(windowWidth,windowHeight),Math.min(windowWidth,windowHeight));
-            canvas.position((windowWidth-Math.min(windowWidth,windowHeight))/2,(windowHeight - Math.min(windowWidth,windowHeight)) / 2);
+            if (windowWidth>windowHeight){
+                canvas=createCanvas(windowHeight,windowHeight);
+                canvas.position((windowWidth-windowHeight)/2,0);
+            }else{
+                canvas=createCanvas(windowWidth,windowWidth);
+                canvas.position(0,(windowHeight-windowWidth)/2);
+            }
         	showText("There is a sea of unusually shaped spacecraft in front of you.");
             buttons = [
               { name: "button1", x: 250, y: 350, w: 200, h: 100, question: "Temp"},
