@@ -75,17 +75,17 @@
             canvas.position((windowWidth-Math.min(windowWidth,windowHeight))/2,(windowHeight - Math.min(windowWidth,windowHeight)) / 2);
         	showText("There is a sea of unusually shaped spacecraft in front of you.");
             buttons = [
-              { name: "button1", x: 250*Math.min(windowWidth,windowHeight)/1000, y: 350*Math.min(windowWidth,windowHeight)/1000, w: 200*Math.min(windowWidth,windowHeight)/1000, h: 100*Math.min(windowWidth,windowHeight)/1000, question: "Temp"},
-              { name: "button2", x: 550*Math.min(windowWidth,windowHeight)/1000, y: 350*Math.min(windowWidth,windowHeight)/1000, w: 200*Math.min(windowWidth,windowHeight)/1000, h: 100*Math.min(windowWidth,windowHeight)/1000, question: "Temp"},
-              { name: "button3", x: 250*Math.min(windowWidth,windowHeight)/1000, y: 550*Math.min(windowWidth,windowHeight)/1000, w: 200*Math.min(windowWidth,windowHeight)/1000, h: 100*Math.min(windowWidth,windowHeight)/1000, question: "Temp"},
-            	{ name: "button4", x:550*Math.min(windowWidth,windowHeight)/1000, y:550*Math.min(windowWidth,windowHeight)/1000, w:200*Math.min(windowWidth,windowHeight)/1000, h:100*Math.min(windowWidth,windowHeight)/1000, question: "Temp"}
+              { name: "button1", x: 250*width/1000, y: 350*width/1000, w: 200*width/1000, h: 100*width/1000, question: "Temp"},
+              { name: "button2", x: 550*width/1000, y: 350*width/1000, w: 200*width/1000, h: 100*width/1000, question: "Temp"},
+              { name: "button3", x: 250*width/1000, y: 550*width/1000, w: 200*width/1000, h: 100*width/1000, question: "Temp"},
+            	{ name: "button4", x:550*width/1000, y:550*width/1000, w:200*width/1000, h:100*width/1000, question: "Temp"}
             ];
             cockpitZones = [
-              { name: "Lightspeed", x: 355*Math.min(windowWidth,windowHeight)/1000, y: 730*Math.min(windowWidth,windowHeight)/1000, w: 75*Math.min(windowWidth,windowHeight)/1000, h: 60*Math.min(windowWidth,windowHeight)/1000, message:"You escape." },
-              { name: "Fire", x: 570*Math.min(windowWidth,windowHeight)/1000, y: 730*Math.min(windowWidth,windowHeight)/1000, w: 75*Math.min(windowWidth,windowHeight)/1000, h: 60*Math.min(windowWidth,windowHeight)/1000,message:"You fire ... and miss." },
-              { name: "Joystick", x: 462*Math.min(windowWidth,windowHeight)/1000, y: 560*Math.min(windowWidth,windowHeight)/1000, w: 76*Math.min(windowWidth,windowHeight)/1000, h: 150*Math.min(windowWidth,windowHeight)/1000, message:"Which direction do you want to move?"},
-            	{ name: "Eject", x:740*Math.min(windowWidth,windowHeight)/1000, y:730*Math.min(windowWidth,windowHeight)/1000, w:50*Math.min(windowWidth,windowHeight)/1000, h:40*Math.min(windowWidth,windowHeight)/1000, message:"Well that was a bad idea."},
-            	{ name: "Information Screen", x:365*Math.min(windowWidth,windowHeight)/1000, y:370*Math.min(windowWidth,windowHeight)/1000, w:270*Math.min(windowWidth,windowHeight)/1000, h:185*Math.min(windowWidth,windowHeight)/1000, message:"There seems to be a distress call coming from [2,1].",message2:"It looks like there is a gap in the unidentifiable spacecraft [1,0]"},
+              { name: "Lightspeed", x: 355*width/1000, y: 730*width/1000, w: 75*width/1000, h: 60*width/1000, message:"You escape." },
+              { name: "Fire", x: 570*width/1000, y: 730*width/1000, w: 75*width/1000, h: 60*width/1000,message:"You fire ... and miss." },
+              { name: "Joystick", x: 462*width/1000, y: 560*width/1000, w: 76*width/1000, h: 150*width/1000, message:"Which direction do you want to move?"},
+            	{ name: "Eject", x:740*width/1000, y:730*width/1000, w:50*width/1000, h:40*width/1000, message:"Well that was a bad idea."},
+            	{ name: "Information Screen", x:365*width/1000, y:370*width/1000, w:270*width/1000, h:185*width/1000, message:"There seems to be a distress call coming from [2,1].",message2:"It looks like there is a gap in the unidentifiable spacecraft [1,0]"},
             ];
             
         } 
@@ -137,8 +137,8 @@
             rect(button.x, button.y, button.w, button.h);
         		noStroke();
         		fill(0);
-        		textSize(32*Math.min(windowWidth,windowHeight)/1000);
-        		text (button.question, button.x+100*Math.min(windowWidth,windowHeight)/1000,button.y+50*Math.min(windowWidth,windowHeight)/1000);
+        		textSize(32*width/1000);
+        		text (button.question, button.x+100*width/1000,button.y+50*width/1000);
           }
         
         }
@@ -277,10 +277,10 @@
         }
         function drawMessage(message, yPos) {
           fill(0); // Black background bar
-          rect(0, yPos - 25*Math.min(windowWidth,windowHeight)/1000, width, 50*Math.min(windowWidth,windowHeight)/1000);
+          rect(0, yPos - 25*width/1000, width, 50*width/1000);
           
           fill(255); // White text
-          textSize(24*Math.min(windowWidth,windowHeight)/1000);
+          textSize(24*width/1000);
           textAlign(CENTER, CENTER);
           text(message, width / 2, yPos);
         }
