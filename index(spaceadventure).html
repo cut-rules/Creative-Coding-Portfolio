@@ -71,7 +71,7 @@
         }
         
         function setup() { 
-            createCanvas(Math.min(windowWidth,windowHeight),Math.min(windowWidth,windowHeight));
+            canvas=createCanvas(Math.min(windowWidth,windowHeight),Math.min(windowWidth,windowHeight));
             canvas.position((windowWidth-Math.min(windowWidth,windowHeight))/2,(windowHeight - Math.min(windowWidth,windowHeight)) / 2);
         	showText("There is a sea of unusually shaped spacecraft in front of you.");
             buttons = [
