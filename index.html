@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects</title>
-    <script src="p5.min.js"></script> <!-- Using your existing p5.min.js -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,13 +34,6 @@
         .button:hover {
             background-color: #005f73;
         }
-        #game-container {
-            display: none;
-            width: 800px;
-            height: 800px;
-            border: 2px solid black;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -51,20 +43,6 @@
     <a href="index(evilmirror).html" class="button">Evil Mirror</a>
     <a href="index(frisbeegenerator).html" class="button">Frisbee Article Generator</a>
     <a href="index(spaceadventure).html" class="button">Play Space Adventure</a>
-
-    <div id="game-container"></div>
-
-    <script src="space_escape.js"></script> <!-- Ensure this file exists and contains your game script -->
-
-    <script>
-        document.getElementById("startGame").addEventListener("click", function() {
-            let gameContainer = document.getElementById("game-container");
-            gameContainer.style.display = "block";
-            gameContainer.innerHTML = ""; // Clear previous canvas if reloaded
-
-            new p5(gameSketch, gameContainer);
-        });
-    </script>
 
 </body>
 </html>
