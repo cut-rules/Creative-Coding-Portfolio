@@ -15,9 +15,11 @@
             height: 100vh;
             background-color: #111;
             color: white;
+            margin: 0;
+            overflow: hidden; /* Prevents scrolling */
         }
         canvas {
-            border: 2px solid white;
+            display: block;
         }
         .back-button {
             position: fixed;
@@ -53,19 +55,7 @@
         const messageDuration = 2000;
         let metPerson = false;
         let zoneRN;
-
-        let outcomes = [
-            "You materialized inside a planet. Instantly crushed.",
-            "You teleported directly into a star. Vaporized on arrival.",
-            "You died. I'm not even sure what happened.",
-            "You phased halfway into an asteroid. The other half didn't make it.",
-            "You reappeared inside a black hole. Say goodbye to time itself.",
-            "You teleported into the middle of an ongoing space battle. Missiles incoming.",
-            "You ended up inside a sunken spaceship. Oxygen was never an option.",
-            "You appeared in a reactor core. At least it was quick.",
-            "You re-emerged in the middle of a supernova. Good luck with that.",
-            "You teleported to an empty void dimension. There is no escape."
-        ];
+        let canvasWidth, canvasHeight;
 
         function preload() {
             backgroundImage = loadImage('pilotcockpitforgame.png');
@@ -73,16 +63,19 @@
         }
 
         function setup() { 
-            createCanvas(800, 800);
+            canvasWidth = windowWidth;
+            canvasHeight = windowHeight;
+            createCanvas(canvasWidth, canvasHeight);
             showText("There is a sea of unusually shaped spacecraft in front of you.");
         }
 
         function draw() {
-            background(200);
+            background(0);
+
             if (gameState === "destroyed") {
-                image(endImage, 0, 0);
+                image(endImage, 0, 0, canvasWidth, canvasHeight); // Scale properly
             } else {
-                image(backgroundImage, 0, 0);
+                image(backgroundImage, 0, 0, canvasWidth, canvasHeight); // Scale properly
             }
 
             if (millis() - messageTimer1 < messageDuration) {
@@ -99,7 +92,7 @@
         }
 
         function drawMessage(message, yPos) {
-            fill(0);
+            fill(0, 180); // Semi-transparent black box
             rect(0, yPos - 25, width, 50);
             fill(255);
             textSize(24);
@@ -140,6 +133,12 @@
                 showText("You did escape though.");
             }
             gameState = "escaped";
+        }
+
+        function windowResized() {
+            canvasWidth = windowWidth;
+            canvasHeight = windowHeight;
+            resizeCanvas(canvasWidth, canvasHeight);
         }
     </script>
 
