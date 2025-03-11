@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects</title>
+    <title>Charlie Bitler - Creative Coding Portfolio</title>
     <style>
+        /* Default Styles */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -12,14 +13,16 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            text-align: center;
             background: linear-gradient(to bottom, #1e3c72, #2a5298);
             color: white;
-            text-align: center;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         }
         h1 {
             margin-bottom: 30px;
             font-size: 36px;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: color 0.5s ease-in-out;
         }
         .button-container {
             display: flex;
@@ -39,11 +42,10 @@
             border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            transition: 0.3s ease-in-out;
+            transition: 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
         }
         .button:hover {
-            background-color: #005f73;
             transform: scale(1.1);
         }
         .info-box {
@@ -60,26 +62,123 @@
             justify-content: center;
             transition: opacity 0.3s ease-in-out;
         }
+
+        /* Theme-Specific Styles (Initially Hidden) */
+        .horror-theme {
+            background: linear-gradient(to bottom, #000, #440000);
+            color: #ff3333;
+        }
+        .horror-theme h1 {
+            color: #ff0000;
+            text-shadow: 4px 4px 10px rgba(255, 0, 0, 0.8);
+        }
+        .horror-theme .button {
+            background-color: #550000;
+            box-shadow: 3px 3px 10px rgba(255, 0, 0, 0.5);
+        }
+        .horror-theme .info-box {
+            background: rgba(100, 0, 0, 0.6);
+        }
+
+        .newspaper-theme {
+            background: url('newspaper-bg.jpg') center/cover no-repeat;
+            color: black;
+            font-family: "Times New Roman", serif;
+        }
+        .newspaper-theme h1 {
+            color: black;
+            text-shadow: none;
+        }
+        .newspaper-theme .button {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+            box-shadow: none;
+        }
+        .newspaper-theme .info-box {
+            background: rgba(255, 255, 255, 0.8);
+            color: black;
+            border: 1px solid black;
+        }
+
+        .sci-fi-theme {
+            background: radial-gradient(circle, #001a33, #000);
+            color: cyan;
+        }
+        .sci-fi-theme h1 {
+            color: cyan;
+            text-shadow: 0 0 15px cyan;
+        }
+        .sci-fi-theme .button {
+            background-color: #002244;
+            box-shadow: 0 0 10px cyan;
+        }
+        .sci-fi-theme .info-box {
+            background: rgba(0, 50, 100, 0.5);
+        }
     </style>
 </head>
-<body>
+<body id="page-body">
 
     <h1>My Projects</h1>
 
     <div class="button-container">
-        <a href="index(evilmirror).html" class="button" onmouseover="showInfo('A mysterious reflection that distorts reality.')" onmouseout="clearInfo()">Evil Mirror</a>
-        <a href="index(frisbeegenerator).html" class="button" onmouseover="showInfo('Randomly generates frisbee-related articles.')" onmouseout="clearInfo()">Frisbee Article Generator</a>
-        <a href="index(spaceadventure).html" class="button" onmouseover="showInfo('Embark on a dangerous journey through space!')" onmouseout="clearInfo()">Play Space Adventure</a>
+        <a href="index(evilmirror).html" 
+           class="button" 
+           onmouseover="applyTheme('horror')" 
+           onmouseout="resetTheme()" 
+           onmouseover="showInfo('When you look into the mirror, something might look back.')"
+           onmouseout="clearInfo()">
+            Evil Mirror
+        </a>
+
+        <a href="index(frisbeegenerator).html" 
+           class="button" 
+           onmouseover="applyTheme('newspaper')" 
+           onmouseout="resetTheme()" 
+           onmouseover="showInfo('If you ever wanted to read infinitely many newspaper articles about frisbee, then this is for you.')"
+           onmouseout="clearInfo()">
+            Frisbee Article Generator
+        </a>
+
+        <a href="index(spaceadventure).html" 
+           class="button" 
+           onmouseover="applyTheme('sci-fi')" 
+           onmouseout="resetTheme()" 
+           onmouseover="showInfo('Fun little space adventure game!')"
+           onmouseout="clearInfo()">
+            Play Space Adventure
+        </a>
     </div>
 
-    <div class="info-box" id="info-box">Hover over a button to see details.</div>
+    <div class="info-box" id="info-box">The Frisbee Article Generator sources text from Ultiworld.com articles. Hover over a button to see details about a project.</div>
 
     <script>
         function showInfo(text) {
             document.getElementById("info-box").textContent = text;
         }
+
         function clearInfo() {
-            document.getElementById("info-box").textContent = "Hover over a button to see details.";
+            document.getElementById("info-box").textContent = "The Frisbee Article Generator sources text from Ultiworld.com articles. Hover over a button to see details.";
+        }
+
+        function applyTheme(theme) {
+            let body = document.getElementById("page-body");
+            if (theme === "horror") {
+                body.classList.add("horror-theme");
+                body.classList.remove("newspaper-theme", "sci-fi-theme");
+            } else if (theme === "newspaper") {
+                body.classList.add("newspaper-theme");
+                body.classList.remove("horror-theme", "sci-fi-theme");
+            } else if (theme === "sci-fi") {
+                body.classList.add("sci-fi-theme");
+                body.classList.remove("horror-theme", "newspaper-theme");
+            }
+        }
+
+        function resetTheme() {
+            let body = document.getElementById("page-body");
+            body.classList.remove("horror-theme", "newspaper-theme", "sci-fi-theme");
         }
     </script>
 
