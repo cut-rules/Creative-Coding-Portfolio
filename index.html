@@ -12,27 +12,53 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
         }
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
         .button {
-            display: block;
-            width: 200px;
+            display: inline-block;
+            width: 220px;
             padding: 15px;
-            margin: 10px;
             text-align: center;
             background-color: #008CBA;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
+            transition: 0.3s ease-in-out;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
         }
         .button:hover {
             background-color: #005f73;
+            transform: scale(1.1);
+        }
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 18px;
+            width: 500px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -40,9 +66,22 @@
 
     <h1>My Projects</h1>
 
-    <a href="index(evilmirror).html" class="button">Evil Mirror</a>
-    <a href="index(frisbeegenerator).html" class="button">Frisbee Article Generator</a>
-    <a href="index(spaceadventure).html" class="button">Play Space Adventure</a>
+    <div class="button-container">
+        <a href="index(evilmirror).html" class="button" onmouseover="showInfo('A mysterious reflection that distorts reality.')" onmouseout="clearInfo()">Evil Mirror</a>
+        <a href="index(frisbeegenerator).html" class="button" onmouseover="showInfo('Randomly generates frisbee-related articles.')" onmouseout="clearInfo()">Frisbee Article Generator</a>
+        <a href="index(spaceadventure).html" class="button" onmouseover="showInfo('Embark on a dangerous journey through space!')" onmouseout="clearInfo()">Play Space Adventure</a>
+    </div>
+
+    <div class="info-box" id="info-box">Hover over a button to see details.</div>
+
+    <script>
+        function showInfo(text) {
+            document.getElementById("info-box").textContent = text;
+        }
+        function clearInfo() {
+            document.getElementById("info-box").textContent = "Hover over a button to see details.";
+        }
+    </script>
 
 </body>
 </html>
